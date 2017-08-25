@@ -3,6 +3,7 @@
 
     <declare-styleable name="HashtagView">
         <attr name="tagTextColor" format="color|reference"/>
+        <attr name="tagSelectedTextColor" format="color|reference"/>
         <attr name="tagTextSize" format="dimension"/>
         <attr name="tagTextGravity" format="enum">
             <enum name="left" value="3"/>
@@ -16,6 +17,7 @@
             <enum name="marquee" value="3"/>
         </attr>
         <attr name="tagBackground" format="color|reference"/>
+        <attr name="tagSelectedBackground" format="color|reference"/>
         <attr name="tagForeground" format="color|reference"/>
         <attr name="tagDrawableLeft" format="reference"/>
         <attr name="tagSelectedDrawableLeft" format="reference"/>

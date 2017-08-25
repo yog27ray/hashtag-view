@@ -116,6 +116,7 @@ public class HashtagView extends LinearLayout {
     private SortState sortState = SortState.initState();
 
     private ColorStateList itemTextColorStateList;
+    private ColorStateList itemSelectedTextColorStateList;
     private int itemMargin;
     private int itemPaddingLeft;
     private int itemPaddingRight;
@@ -135,6 +136,7 @@ public class HashtagView extends LinearLayout {
     private int rowCount;
     private int composeMode;
     private int backgroundDrawable;
+    private int selectedBackgroundDrawable;
     private int foregroundDrawable;
     private int leftDrawable;
     private int leftSelectedDrawable;
@@ -401,7 +403,7 @@ public class HashtagView extends LinearLayout {
         if (viewMap != null) {
             for (ItemData item : viewMap.values()) {
                 item.isSelected = false;
-                item.displaySelection(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable);
+                item.displaySelection(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable, backgroundDrawable, selectedBackgroundDrawable, itemTextColorStateList, itemSelectedTextColorStateList);
                 item.decorateText(transformer);
             }
         }
@@ -447,6 +449,10 @@ public class HashtagView extends LinearLayout {
 
     public void setItemTextColor(int textColor) {
         this.itemTextColorStateList = ColorStateList.valueOf(textColor);
+    }
+
+    public void setItemSelectedTextColor(int textColor) {
+        this.itemSelectedTextColorStateList = ColorStateList.valueOf(textColor);
     }
 
     public void setItemTextColorRes(@ColorRes int textColor) {
@@ -505,6 +511,10 @@ public class HashtagView extends LinearLayout {
 
     public void setBackgroundDrawable(@DrawableRes int backgroundDrawable) {
         this.backgroundDrawable = backgroundDrawable;
+    }
+
+    public void setSelectedBackgroundDrawable(@DrawableRes int selectedBackgroundDrawable) {
+        this.selectedBackgroundDrawable = selectedBackgroundDrawable;
     }
 
     public void setBackgroundColor(@ColorRes int backgroundDrawable) {
@@ -570,6 +580,8 @@ public class HashtagView extends LinearLayout {
             composeMode = a.getInt(R.styleable.HashtagView_composeMode, COMPOSE_ORIGIN);
 
             backgroundDrawable = a.getResourceId(R.styleable.HashtagView_tagBackground, 0);
+            selectedBackgroundDrawable = a.getResourceId(R.styleable.HashtagView_tagSelectedBackground, 0);
+            if (selectedBackgroundDrawable == 0) selectedBackgroundDrawable = backgroundDrawable;
             foregroundDrawable = a.getResourceId(R.styleable.HashtagView_tagForeground, 0);
             leftDrawable = a.getResourceId(R.styleable.HashtagView_tagDrawableLeft, 0);
             leftSelectedDrawable = a.getResourceId(R.styleable.HashtagView_tagSelectedDrawableLeft, 0);
@@ -577,8 +589,12 @@ public class HashtagView extends LinearLayout {
             rightSelectedDrawable = a.getResourceId(R.styleable.HashtagView_tagSelectedDrawableRight, 0);
 
             itemTextColorStateList = a.getColorStateList(R.styleable.HashtagView_tagTextColor);
+            itemSelectedTextColorStateList = a.getColorStateList(R.styleable.HashtagView_tagSelectedTextColor);
             if (itemTextColorStateList == null) {
                 itemTextColorStateList = ColorStateList.valueOf(Color.BLACK);
+            }
+            if (itemSelectedTextColorStateList == null) {
+                itemSelectedTextColorStateList = itemTextColorStateList;
             }
 
             isInSelectMode = a.getBoolean(R.styleable.HashtagView_selectionMode, false);
@@ -667,7 +683,7 @@ public class HashtagView extends LinearLayout {
             item.isSelected = selection;
 
             item.decorateText(transformer);
-            item.displaySelection(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable);
+            item.displaySelection(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable, backgroundDrawable, selectedBackgroundDrawable, itemTextColorStateList, itemSelectedTextColorStateList);
         }
     }
 
@@ -823,7 +839,7 @@ public class HashtagView extends LinearLayout {
             }
         }
 
-        item.select(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable);
+        item.select(leftDrawable, leftSelectedDrawable, rightDrawable, rightSelectedDrawable, backgroundDrawable, selectedBackgroundDrawable, itemTextColorStateList, itemSelectedTextColorStateList);
         item.decorateText(transformer);
 
         if (selectListeners != null) {

@@ -1,5 +1,6 @@
 package com.greenfrvr.hashtagview;
 
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
@@ -25,15 +26,18 @@ class ItemData<T> implements Comparable<ItemData> {
         ((TextView) view.findViewById(R.id.text)).setText(charSequence);
     }
 
-    void displaySelection(int left, int leftSelected, int right, int rightSelected) {
-        ((TextView) view.findViewById(R.id.text)).setCompoundDrawablesWithIntrinsicBounds(isSelected ? leftSelected : left, 0, isSelected ? rightSelected : right, 0);
+    void displaySelection(int left, int leftSelected, int right, int rightSelected, int background, int selectedBackground, ColorStateList textColor, ColorStateList selectedTextColor) {
+        view.setBackgroundResource(isSelected ? selectedBackground : background);
+        TextView textView = (TextView) view.findViewById(R.id.text);
+        textView.setCompoundDrawablesWithIntrinsicBounds(isSelected ? leftSelected : left, 0, isSelected ? rightSelected : right, 0);
+        textView.setTextColor(isSelected ? selectedTextColor : textColor);
         view.setSelected(isSelected);
         view.invalidate();
     }
 
-    void select(int left, int leftSelected, int right, int rightSelected) {
+    void select(int left, int leftSelected, int right, int rightSelected, int background, int selectedBackground, ColorStateList textColor, ColorStateList selectedTextColor) {
         isSelected = !isSelected;
-        displaySelection(left, leftSelected, right, rightSelected);
+        displaySelection(left, leftSelected, right, rightSelected, background, selectedBackground, textColor, selectedTextColor);
     }
 
     void decorateText(HashtagView.DataTransform<T> transformer) {
